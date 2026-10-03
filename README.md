@@ -38,15 +38,9 @@ module "example" {
 }
 ```
 
-Pin to a specific release tag if you want your project insulated from future changes until you deliberately upgrade:
-
-```hcl
-source = "git::https://github.com/KateChukwusom/AWSTerraform_Modules.git//modules/IAM?ref=v1.0.0"
-```
-
 ## Examples
 
-Every module includes an `examples/` folder nested inside it, with a complete, runnable composition, real variable values, a working `terraform.tfvars`, and its own README walking through what gets created and why. These examples are the fastest way to see a module in action before integrating it into your own project.
+Every module includes an `examples/` directory inside the module directory, with a complete, runnable composition, real variable values, a working `terraform.tfvars`, and its own README walking through what gets created and why. These examples are the fastest way to see a module in action before integrating it into your own project.
 
 ## Contributing
 
