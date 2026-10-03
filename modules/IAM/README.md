@@ -57,11 +57,11 @@ Per-user permission statements, this is ayered on top of whatever the group gran
 
 ```hcl
 cob-user-policy-statements = {
-  maya = [
+  Kate = [
     { effect = "Allow", actions = ["ec2:*"], resources = ["*"] },
     { effect = "Allow", actions = ["s3:GetObject", "s3:PutObject"], resources = ["*"] }
   ]
-  yama = [
+  Chisom = [
     { effect = "Allow", actions = ["s3:PutObject"], resources = ["*"] }
   ]
 }
@@ -99,8 +99,7 @@ cob_iam_role_policy_statements = {
 ### `instance_profiles` (map(string), default: `{}`)
 
 Which roles should get an EC2 instance profile, and what each profile should be named. Keyed by the instance profile name, with the value being the role name it attaches to (must match a key in `cob_iam_roles`). Required if an EC2 instance needs to actually carry the role at launch.
-
-The name and the role are kept as separate parts of the same entry — rather than assuming the profile name is the role name so a mismatched or misspelled role key fails at `plan` time with a clear error, instead of silently producing a broken profile. Validated: every value must exist as a key in `cob_iam_roles`.
+ Validated: every value must exist as a key in `cob_iam_roles`.
 
 ---
 
@@ -109,19 +108,19 @@ The name and the role are kept as separate parts of the same entry — rather th
 | Output | Description |
 | --- | --- |
 | `user_names` | List of created IAM usernames |
-| `user_arns` | Map of username → user ARN |
+| `user_arns` | Map of username, user ARN |
 | `group_name` | Name of the created group |
 | `group_arn` | ARN of the created group |
-| `role_arns` | Map of role name → role ARN |
-| `role_names` | Map of role name → role name |
-| `instance_profile_names` | Map of role name → instance profile name |
-| `instance_profile_arns` | Map of role name → instance profile ARN |
+| `role_arns` | Map of role name, role ARN |
+| `role_names` | Map of role name, role name |
+| `instance_profile_names` | Map of role name, instance profile name |
+| `instance_profile_arns` | Map of role name, instance profile ARN |
 
 ---
 
 ## Writing policy statements: actions reference
 
-Every policy statement follows the same shape — `effect`, `actions`, `resources` but the action strings are specific to each AWS service, and typing them by hand from memory is how typos slip in. Below are the most commonly needed actions for popular services, so you don't need to go through the console.
+Every policy statement follows the same shape; `effect`, `actions`, `resources` but the action strings are specific to each AWS service, and typing them by hand from memory is how typos slip in. Below are the most commonly needed actions for popular services, so you don't need to go through the console.
 
 **Format:** `service:ActionName`, the wildcard `*` matches any suffix (e.g. `ec2:Describe*` matches every read-only EC2 describe call).
 
@@ -206,7 +205,7 @@ module "iam" {
 }
 ```
 
-The `//IAM` at the end tells Terraform which subfolder of the repository contains the module code — adjust it to match wherever this module actually lives in the repo (e.g. `//modules/IAM`).
+The `//IAM` at the end tells Terraform which subfolder of the repository contains the module code  adjust it to match wherever this module actually lives in the repo (e.g. `//modules/IAM`).
 
 You can also pin to a specific tag or branch, so your project isn't affected by future changes to this module until you deliberately upgrade:
 
