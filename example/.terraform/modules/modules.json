@@ -1,7 +1,0 @@
-{"Modules":[{"Key":"",
-            "Source":"", 
-            "Dir":"."},
-            
-            {"Key":"IAM",
-            "Source":"../modules/IAM",
-            "Dir":"../modules/IAM"}]}
