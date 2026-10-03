@@ -27,11 +27,11 @@ Deployment environment. Restricted to `"dev"` or `"prod"`. Catches typos like `"
 
 ### `iam_users` (list(string), default: `[]`)
 
-Usernames to create as IAM users. Defaults to empty — a team that only wants roles, with no human users, can skip this entirely. Validated for uniqueness (no duplicate names).
+Usernames to create as IAM users. Defaults to empty, a team that only wants roles, with no human users, can skip this entirely. Validated for uniqueness (no duplicate names).
 
 ### `cob_iam_group_name` (string, required)
 
-Name of the IAM group created. Required — no sensible default exists for a group name. Validated against AWS's actual naming rule: 1–128 characters, letters/digits/`+=,.@_-` only.
+Name of the IAM group created.  
 
 ### `selected_group_members` (list(string), default: `[]`)
 
