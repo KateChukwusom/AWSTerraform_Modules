@@ -2,13 +2,12 @@
 
 A collection of reusable Terraform modules for provisioning AWS infrastructure. Each module is built to be referenced and composed by consuming projects through variables alone, no module needs to be cloned and edited to be used.
 
-
 As more modules are added to this repository, each one follows the same pattern inside `modules/`: its own folder, its own `README.md`, and its own `examples/` subfolder showing a real, working composition.
 
 ## Available modules
 
 | Module | Description | Docs |
-|--------|-------------|------|
+| -------- | ------------- | ------ |
 | [`IAM`](./modules/IAM) | Reusable AWS IAM module for users, groups, roles, and policies | [modules/IAM/README.md](./modules/IAM/README.md) |
 
 ## Design philosophy
@@ -45,5 +44,3 @@ Every module includes an `examples/` directory inside the module directory, with
 ## Contributing
 
 Issues and pull requests are welcome. If you're proposing a change to an existing module, please update its `examples/` folder and README to reflect the change, so the documentation and the working example never drift apart.
-
-
