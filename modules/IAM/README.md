@@ -188,3 +188,80 @@ resources = ["arn:aws:dynamodb:us-east-1:123456789012:table/my-table"]
 ## A note on validation
 
 Every variable in this module includes a `validation` block that checks either **content validity** (is this an allowed value, like `effect` being `"Allow"`/`"Deny"`) or **cross-reference validity** (does this key/name actually exist in the other variable it depends on, like a `selected_group_members` entry existing in `iam_users`). These run at `terraform plan`, before any AWS API call, catching mistakes immediately instead of letting them surface as a confusing AWS error, or worse, silently succeed with the wrong result.
+
+## Using this module in your own project
+
+This module is built to be **reused**, not cloned and edited. The intended workflow is: you reference this module from your own Terraform configuration, pass in your own values through variables, and never touch the module's internal code at all. That's the whole point of the design principles above, nothing is hardcoded, everything optional defaults to empty, so the exact same module code can serve any team's IAM setup just by changing what you feed it.
+
+Here is how you can reference it:
+
+### Option 1: Git source
+
+If your project is separate from this repository entirely, reference the module directly from GitHub:
+
+```hcl
+module "iam" {
+  source = "git::https://github.com/KateChukwusom/AWSTerraform_modules.git//IAM"
+
+}
+```
+
+The `//IAM` at the end tells Terraform which subfolder of the repository contains the module code — adjust it to match wherever this module actually lives in the repo (e.g. `//modules/IAM`).
+
+You can also pin to a specific tag or branch, so your project isn't affected by future changes to this module until you deliberately upgrade:
+
+```hcl
+source = "git::https://github.com/KateChukwusom/AWSTerraform_modules.git//IAM?ref=v1.0.0"
+```
+
+### Option 2: Local path (if you've cloned this repo directly)
+
+If you've cloned this repository and are working inside it, for example, building your own example or environment folder alongside the module:
+
+```hcl
+module "iam" {
+  source = "../IAM"
+
+}
+```
+
+The exact relative path depends on where your own configuration sits relative to this module's folder — see the [`examples/`](./examples) folder in this repo for a working reference.
+
+### Setting up your own `terraform.tfvars`
+
+Once the module is referenced, the recommended way to supply your values is through a `terraform.tfvars` file in your own project, not by hardcoding values directly into the `module` block. This keeps your identities, policies, and role definitions separate from the logic, and means updating your IAM setup later only requires editing one file.
+
+See [`examples/terraform.tfvars`](./examples/terraform.tfvars) for a complete, working example covering every variable this module accepts.
+
+Create your own `terraform.tfvars` alongside your `main.tf`, declare a matching `variable` block for each key in your own `variables.tf`, and pass each one into the module call explicitly:
+
+```hcl
+module "iam" {
+  source = "../IAM"
+
+  team                            = var.team
+  environment                     = var.environment
+  iam_users                       = var.iam_users
+  cob_iam_group_name              = var.cob_iam_group_name
+  selected_group_members          = var.selected_group_members
+  cob-group-policy-statements     = var.cob-group-policy-statements
+  cob-user-policy-statements      = var.cob-user-policy-statements
+  cob_iam_roles                   = var.cob_iam_roles
+  cob_iam_role_policy_statements  = var.cob_iam_role_policy_statements
+  instance_profiles               = var.instance_profiles
+}
+```
+
+A file named exactly `terraform.tfvars` loads automatically:
+
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+If you name it something else (e.g. `dev.tfvars`), pass it explicitly on every command:
+
+```bash
+terraform plan -var-file="dev.tfvars"
+```
